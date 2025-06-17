@@ -6,6 +6,7 @@ use App\Support\Helpers\Validation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator as ValidatorForm;
 use App\Support\Helpers\Response;
+use Illuminate\Validation\Rule;
 
 class ClientRegisterRequest extends FormRequest
 {
@@ -18,7 +19,10 @@ class ClientRegisterRequest extends FormRequest
     {
         return [
             'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:clients,email',
+            'email' => [
+                'required',
+                Rule::unique('pgsql.client.clients', 'email'),
+            ],
             'password' => 'required|string|min:6|confirmed',
         ];
     }
@@ -30,7 +34,7 @@ class ClientRegisterRequest extends FormRequest
 
     protected function failedValidation(ValidatorForm $validator)
     {
-        Response::validation($validator->errors());
+        Response::validation($validator);
     }
 
 }

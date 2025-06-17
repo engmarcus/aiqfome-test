@@ -5,6 +5,7 @@ namespace App\Support\Helpers;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as ResponseHttp;
+use Illuminate\Contracts\Validation\Validator;
 
 class Response
 {
@@ -88,12 +89,12 @@ class Response
      *
      * @return void
      */
-    public static function validation(array|string $errors, int $code = ResponseHttp::HTTP_UNPROCESSABLE_ENTITY): void
+    public static function validation(Validator $errors, int $code = ResponseHttp::HTTP_UNPROCESSABLE_ENTITY): void
     {
         throw new HttpResponseException(new JsonResponse([
             'success' => false,
             'message' => 'Validation failed. Please review the input data.',
-            'errors'  => is_array($errors) ? $errors : ['details' => $errors],
+            'errors'  => $errors->errors(),
         ], $code));
     }
 

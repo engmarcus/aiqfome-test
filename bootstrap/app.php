@@ -9,14 +9,15 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         health: '/up',
         then: function () {
-            Route::middleware('api')
-                ->prefix('api')
+            Route::prefix('api')
                 ->name('users.')
                 ->group(base_path('routes/api/users.php'));
-            Route::middleware('api')
-                ->prefix('api')
+            Route::prefix('api')
                 ->name('products.')
                 ->group(base_path('routes/api/products.php'));
+            Route::prefix('api')
+                ->name('auth.')
+                ->group(base_path('routes/api/auth.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {

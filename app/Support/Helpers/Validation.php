@@ -45,9 +45,8 @@ class Validation
             'email' => 'The :attribute must be a valid email address.',
             'confirmed' => 'The :attribute confirmation does not match.',
             'password' => 'The password must meet the required criteria.',
-            'unique' => app()->environment('production')
-                ? 'Unable to complete the request. Please verify your data.'
-                : 'The :attribute must be unique.',
+            'unique' => 'Unable to complete the request. Please verify your data.'
+
         ];
 
         $template = $templates[$ruleName] ?? 'The :field has an invalid value.';
