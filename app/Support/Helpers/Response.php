@@ -56,6 +56,32 @@ class Response
 
 
     /**
+     * Returns a generic error response..
+     * @param \Throwable $error
+     *
+     * @return JsonResponse
+     */
+    public static function genericError( string $error, int $statusCode ): JsonResponse
+    {
+        $statusCode = self::isStandardHttpStatusCode($statusCode)
+            ? $statusCode
+            : ResponseHttp::HTTP_INTERNAL_SERVER_ERROR;
+
+        $response = [
+            'success'    => false,
+            'message'    => $statusCode === 500
+                ? 'Unexpected error occurred. Please try again later or contact support.'
+                : 'An error occurred during the process.',
+            'error' => [
+                'statusCode' => $statusCode,
+                'details'    => $error,
+            ],
+        ];
+
+        return response()->json($response, $statusCode);
+    }
+
+    /**
      * Throw a validation error response.
      * @param array|string $errors
      * @param int $code
