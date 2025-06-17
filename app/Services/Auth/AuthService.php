@@ -19,7 +19,7 @@ class AuthService
         return  $this->clientRepository->insert($userData);
     }
 
-    public function signIn(array $credentials)
+    public function signIn(array $credentials): array
     {
 
         $token = auth('api')->attempt($credentials);
