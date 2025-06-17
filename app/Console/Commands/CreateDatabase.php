@@ -36,7 +36,7 @@ class CreateDatabase extends Command
             $dbPdo = new PDO("pgsql:host=$dbHost;port=$dbPort;dbname=$dbName", $dbUser, $dbPass);
             $dbPdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $schemas = ['auth', 'clients', 'users', 'products'];
+            $schemas = ['auth', 'client', 'user', 'product'];
 
             foreach ($schemas as $schema) {
                 $stmt = $dbPdo->query("SELECT schema_name FROM information_schema.schemata WHERE schema_name = '$schema'");
