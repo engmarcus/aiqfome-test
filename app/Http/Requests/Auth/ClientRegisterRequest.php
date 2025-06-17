@@ -19,7 +19,7 @@ class ClientRegisterRequest extends FormRequest
         return [
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:clients,email',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:6|confirmed',
         ];
     }
 
