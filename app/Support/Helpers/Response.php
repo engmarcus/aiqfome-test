@@ -40,7 +40,6 @@ class Response
         $statusCode = self::isStandardHttpStatusCode($error->getCode())
             ? $error->getCode()
             : ResponseHttp::HTTP_INTERNAL_SERVER_ERROR;
-
         $response = [
             'success'    => false,
             'message'    => $statusCode === 500
@@ -67,7 +66,6 @@ class Response
         $statusCode = self::isStandardHttpStatusCode($statusCode)
             ? $statusCode
             : ResponseHttp::HTTP_INTERNAL_SERVER_ERROR;
-
         $response = [
             'success'    => false,
             'message'    => $statusCode === 500
@@ -140,6 +138,6 @@ class Response
      */
     private static function isStandardHttpStatusCode(int $statusCode): bool
     {
-        return isset(Response::$statusTexts[$statusCode]);
+        return isset(ResponseHttp::$statusTexts[$statusCode]);
     }
 }
