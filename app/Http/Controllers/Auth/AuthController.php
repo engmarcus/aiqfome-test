@@ -24,7 +24,6 @@ class AuthController extends Controller
              return Response::error($error);
         }
     }
-
     public function login(ClientLoginRequest $requestData)
     {
         $loginData = $requestData->only('email', 'password');
