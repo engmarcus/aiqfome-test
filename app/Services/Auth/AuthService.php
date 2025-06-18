@@ -10,9 +10,7 @@ class AuthService
 {
     private $clientRepository;
 
-    public function __construct(ClientRepository $clientRepository) {
-        $this->clientRepository = $clientRepository;
-    }
+    public function __construct(ClientRepository $clientRepository) {}
 
     public function createClient(ClientRegisterRequest $userData): Client
     {

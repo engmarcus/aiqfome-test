@@ -1,5 +1,5 @@
 <?php
-namespace App\Documentation\Annotations;
+namespace App\Documentation\Annotations\Auth;
 
 
 class LoginAnnotation

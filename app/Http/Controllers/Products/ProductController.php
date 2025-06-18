@@ -3,24 +3,12 @@
 namespace App\Http\Controllers\Products;
 
 use App\Http\Controllers\Controller;
-
-
+use App\Services\Product\ProductService;
 
 class ProductController extends Controller
 {
-    public  function __construct()
-    {
-
-    }
-
-    public function listAll()
-    {
-        try{
-            return [];
-        }catch(\Exception $e){
-            return [];
-        }
-    }
+    private $productService;
+    public  function __construct(ProductService $productService){}
 
 }
 

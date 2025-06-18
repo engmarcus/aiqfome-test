@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -29,6 +28,12 @@ class Client extends Authenticatable implements JWTSubject
             'password' => 'hashed',
         ];
     }
+
+    public function favorites()
+    {
+        return $this->hasMany(FavoriteProduct::class);
+    }
+
 
      public function getJWTIdentifier()
     {

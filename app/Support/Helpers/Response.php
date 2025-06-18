@@ -23,7 +23,7 @@ class Response
         return response()
             ->json([
                 'success'    => true,
-                'statusCode' => $code,
+                'message'    => 'ok',
                 'data'       => $data,
             ], $code)
             ->withHeaders($headers);
@@ -56,7 +56,7 @@ class Response
 
 
     /**
-     * Returns a generic error response..
+     * Returns a generic error response.
      * @param \Throwable $error
      *
      * @return JsonResponse

@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Users;
+namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 
 
-
-class UserController extends Controller
+class ClientController extends Controller
 {
     public  function __construct()
     {
