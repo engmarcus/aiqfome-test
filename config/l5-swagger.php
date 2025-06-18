@@ -49,6 +49,7 @@ return [
                     base_path('app/Http/Controllers'),
                     base_path('app/Documentation/Annotations'),
                     base_path('app/Documentation/OpenApi.php'),
+                    base_path('app/Documentation/SharedResponses.php'),
                 ],
             ],
         ],

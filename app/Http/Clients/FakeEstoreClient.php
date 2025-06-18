@@ -17,13 +17,30 @@ class FakeEstoreClient extends HttpClient
     {
         $endPoint = config('fakeapi.products.get');
         $endPoint = str_replace('{id}', $productId, $endPoint);
-        try{
 
-            $dataProduct = $this->get($endPoint);
+        $cacheKey   = $this->getProductCacheKey($productId);
+        $timeCache  = now()->addMinutes(10);
+        return cache()->remember($cacheKey,  $timeCache, function () use ($productId) {
+            try {
+                $endpoint = $this->buildProductEndpoint($productId);
+                $response = $this->get($endpoint);
+                /** Editar response para econimizar recursos e memoria cache */
+                /* refatorar ROTA ADD FAVORITES */
+                dd($response );
+                return true;
+            } catch (\Throwable $e) {
+                return false;
+            }
+        });
+    }
 
-            dd(  $dataProduct);
-        }catch(\Exception $error){
-            throw $error;
-        }
+    private function buildProductEndpoint(int $productId): string
+    {
+        return str_replace('{id}', $productId, config('fakeapi.products.get'));
+    }
+
+    private function getProductCacheKey(int $productId): string
+    {
+        return "products.{$productId}";
     }
 }

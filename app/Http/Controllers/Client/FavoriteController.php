@@ -34,11 +34,12 @@ class FavoriteController extends Controller
 
     public function add(AddClientFavoritesRequest $requestData)
     {
+
         try {
-            $this->favoriteService->addFavorite();
-            return [];
-        } catch(\Exception $e) {
-            return [];
+            $this->favoriteService->addFavorite($requestData->getProductId());
+            return Response::success(null,204);
+        } catch(\Exception $error) {
+            return Response::error($error);
         }
     }
 

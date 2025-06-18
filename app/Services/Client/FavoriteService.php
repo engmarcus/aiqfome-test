@@ -4,6 +4,7 @@ namespace App\Services\Client;
 
 use App\Http\Clients\FakeEstoreClient;
 use App\Repositories\Client\FavoriteRepository;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FavoriteService
 {
@@ -20,12 +21,26 @@ class FavoriteService
         $favorites  = $this->favoriteRepository->getByClientId($clientId);
 
         if($favorites ->isEmpty()) return $favorites;
+
+
+
         return [];
     }
 
-    public function addFavorite()
+    public function addFavorite(int $productId)
     {
-        $this->fakeEstoreClient->fetchProduct(1);
+        $exists = $this->fakeEstoreClient->fetchProduct($productId);
+        if(!$exists){
+            throw new NotFoundHttpException("Product not found: ID {$productId}}",null,404);
+        }
+
+        $clientId = auth()->id();
+
+        $this->favoriteRepository->addItem( [
+            'client_id'  => $clientId,
+            'product_id' => $productId,
+        ]);
+
     }
 }
 

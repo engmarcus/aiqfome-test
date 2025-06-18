@@ -42,5 +42,9 @@ class AddClientFavoritesRequest extends FormRequest
             'productId' => $this->route('productId'),
         ]);
     }
+    public function getProductId(): int
+    {
+        return (int) $this->validated()['productId'];
+    }
 
 }

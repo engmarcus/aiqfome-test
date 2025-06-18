@@ -6,10 +6,15 @@ use App\Models\FavoriteProduct;
 
 class FavoriteRepository
 {
-
     public function getByClientId(int $clientId)
     {
         return FavoriteProduct::where('client_id',$clientId)->get();
+    }
+
+    public function addItem(array $attributes)
+    {
+        return FavoriteProduct::firstOrCreate($attributes);
+
     }
 }
 
