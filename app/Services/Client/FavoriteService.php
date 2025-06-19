@@ -41,12 +41,24 @@ class FavoriteService
 
         $clientId = auth()->id();
 
-        $this->favoriteRepository->addItem( [
+        $favorite = $this->favoriteRepository->addItem( [
             'client_id'  => $clientId,
             'product_id' => $productId,
         ]);
 
+        return $favorite->wasRecentlyCreated;
+
     }
+    public function removeFavorite(int $productId)
+    {
+        $clientId = auth()->id();
+        $isDeleted = $this->favoriteRepository->removeItem($productId,$clientId);
+        if (!$isDeleted) {
+            throw new NotFoundHttpException("Favorite not found: ID {$productId}",null,404);
+        }
+    }
+
+
     private function buildProductPromises(array $ids): array
     {
         $promises = [];

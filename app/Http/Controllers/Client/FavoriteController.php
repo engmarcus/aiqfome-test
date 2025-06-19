@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\AddClientFavoritesRequest;
 use App\Http\Requests\Client\ListClientFavoritesRequest;
+use App\Http\Requests\Client\RemoveClientFavorites;
 use App\Services\Client\FavoriteService;
 use App\Support\Helpers\Response;
 
@@ -37,21 +38,25 @@ class FavoriteController extends Controller
 
     public function add(AddClientFavoritesRequest $requestData)
     {
-
         try {
-            $this->favoriteService->addFavorite($requestData->getProductId());
-            return Response::success(null,204);
-        } catch(\Exception $error) {
+            $created = $this->favoriteService->addFavorite($requestData->getProductId());
+
+            if ($created) return Response::success('Added to favorited', 201);
+
+            return Response::success('Already favorited');
+
+        } catch (\Exception $error) {
             return Response::error($error);
         }
     }
 
-    public function remove(int $clientId)
+    public function remove(RemoveClientFavorites $requestData)
     {
         try {
-            return [];
-        } catch(\Exception $e) {
-            return [];
+            $this->favoriteService->removeFavorite($requestData->getProductId());
+            return Response::success(null,204);
+        } catch(\Exception $error) {
+            return Response::error($error);
         }
     }
 }

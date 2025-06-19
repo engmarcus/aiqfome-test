@@ -3,24 +3,26 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests\Auth\ClientRegisterRequest;
+use App\Services\Client\ClientService;
+use App\Support\Helpers\Response;
 
 class ClientController extends Controller
 {
-    public  function __construct()
-    {
-
+    private $authService;
+    public function __construct(ClientService $authService) {
+        $this->authService = $authService;
     }
 
-    public function listAll()
+    public function create(ClientRegisterRequest $requestData)
     {
         try{
-            return [];
-        }catch(\Exception $e){
-            return [];
+            $client = $this->authService->createClient($requestData);
+            return Response::success($client,201);
+        }catch(\Exception $error){
+             return Response::error($error);
         }
     }
-
 }
 
 

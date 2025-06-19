@@ -15,15 +15,6 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
-    public function createCount(ClientRegisterRequest $requestData)
-    {
-        try{
-            $client = $this->authService->createClient($requestData);
-            return Response::success($client,201);
-        }catch(\Exception $error){
-             return Response::error($error);
-        }
-    }
     public function login(ClientLoginRequest $requestData)
     {
         $loginData = $requestData->only('email', 'password');

@@ -20,12 +20,14 @@ class Response
      */
     public static function success(mixed $data, int $code = ResponseHttp::HTTP_OK, array $headers = []): JsonResponse
     {
+        $response = [
+            'success' => true,
+            'message' => is_string($data) ? $data : 'ok',
+            'data'    => is_string($data) ? null : $data,
+        ];
+
         return response()
-            ->json([
-                'success'    => true,
-                'message'    => 'ok',
-                'data'       => $data,
-            ], $code)
+            ->json($response, $code)
             ->withHeaders($headers);
     }
 

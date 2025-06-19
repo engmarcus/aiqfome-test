@@ -2,20 +2,14 @@
 
 namespace App\Services\Auth;
 
-use App\Http\Requests\Auth\ClientRegisterRequest;
-use App\Models\Client;
-use App\Repositories\Client\ClientRepository;
+use App\Repositories\Auth\AuthRepository;
+
 
 class AuthService
 {
-    private $clientRepository;
+    private $authRepository;
 
-    public function __construct(ClientRepository $clientRepository) {}
-
-    public function createClient(ClientRegisterRequest $userData): Client
-    {
-        return  $this->clientRepository->insert($userData);
-    }
+    public function __construct(AuthRepository $authRepository) {}
 
     public function signIn(array $credentials): array
     {
