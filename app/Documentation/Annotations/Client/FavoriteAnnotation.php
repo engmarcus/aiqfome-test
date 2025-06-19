@@ -21,8 +21,37 @@ class FavoriteAnnotation
      *     ),
      *
      *     @OA\Response(
+     *         response=200,
+     *         description="Lista de produtos favoritos",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="ok"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="title", type="string", example="Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops"),
+     *                     @OA\Property(property="image", type="string", format="url", example="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"),
+     *                     @OA\Property(property="price", type="number", format="float", example=109.95),
+     *                     @OA\Property(property="review", type="number", format="float", example=3.9),
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
      *         response=204,
-     *         description="Nenhum favorito encontrado"
+     *         description="Sem favoritos - Nenhum conteúdo para mostrar"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         ref="#/components/responses/UnauthorizedError"
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         ref="#/components/responses/ForbiddenError"
      *     ),
      *     @OA\Response(
      *         response=500,
@@ -55,7 +84,7 @@ class FavoriteAnnotation
      *
      *     @OA\Response(
      *         response=204,
-     *         description="No Content — operação concluída com sucesso"
+     *         description="No Content — favorito salvo com sucesso"
      *     ),
      *     @OA\Response(
      *         response=404,

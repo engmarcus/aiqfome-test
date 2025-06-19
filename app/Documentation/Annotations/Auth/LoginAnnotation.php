@@ -20,21 +20,17 @@ class LoginAnnotation
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Login efetuado com sucesso",
+     *         description="Token gerado com sucesso",
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="statusCode", type="integer", example=200),
+     *             @OA\Property(property="message", type="string", example="ok"),
      *             @OA\Property(
      *                 property="data",
      *                 type="object",
-     *                 @OA\Property(property="token", type="string", example="abc123"),
-     *                 @OA\Property(
-     *                     property="user",
-     *                     type="object",
-     *                     @OA\Property(property="id", type="integer", example=1),
-     *                     @OA\Property(property="name", type="string", example="Marcus")
-     *                 )
+     *                 @OA\Property(property="token", type="string", example="OG123123E......."),
+     *                 @OA\Property(property="tokenType", type="string", example="Bearer"),
+     *                 @OA\Property(property="expiresIn", type="integer", example=3600)
      *             )
      *         )
      *     )

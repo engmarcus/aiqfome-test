@@ -23,10 +23,13 @@ class FavoriteController extends Controller
 
         try {
             $favorites = $this->favoriteService->listAll($client->id);
+
             if ($favorites->isEmpty()) {
                 return Response::success(null,204);
             }
-            return $favorites;
+
+            return Response::success($favorites);
+
         } catch(\Exception $error) {
             return Response::error($error);
         }

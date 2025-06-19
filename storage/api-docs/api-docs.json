@@ -39,7 +39,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Login efetuado com sucesso",
+                        "description": "Token gerado com sucesso",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -48,28 +48,23 @@
                                             "type": "boolean",
                                             "example": true
                                         },
-                                        "statusCode": {
-                                            "type": "integer",
-                                            "example": 200
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ok"
                                         },
                                         "data": {
                                             "properties": {
                                                 "token": {
                                                     "type": "string",
-                                                    "example": "abc123"
+                                                    "example": "OG123123E......."
                                                 },
-                                                "user": {
-                                                    "properties": {
-                                                        "id": {
-                                                            "type": "integer",
-                                                            "example": 1
-                                                        },
-                                                        "name": {
-                                                            "type": "string",
-                                                            "example": "Marcus"
-                                                        }
-                                                    },
-                                                    "type": "object"
+                                                "tokenType": {
+                                                    "type": "string",
+                                                    "example": "Bearer"
+                                                },
+                                                "expiresIn": {
+                                                    "type": "integer",
+                                                    "example": 3600
                                                 }
                                             },
                                             "type": "object"
@@ -102,8 +97,65 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "Lista de produtos favoritos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops"
+                                                    },
+                                                    "image": {
+                                                        "type": "string",
+                                                        "format": "url",
+                                                        "example": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"
+                                                    },
+                                                    "price": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 109.95
+                                                    },
+                                                    "review": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 3.9
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "204": {
-                        "description": "Nenhum favorito encontrado"
+                        "description": "Sem favoritos - Nenhum conteúdo para mostrar"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForbiddenError"
                     },
                     "500": {
                         "$ref": "#/components/responses/InternalServerError"
@@ -145,7 +197,7 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "No Content — operação concluída com sucesso"
+                        "description": "No Content — favorito salvo com sucesso"
                     },
                     "404": {
                         "description": "Not Found — produto não localizado",
