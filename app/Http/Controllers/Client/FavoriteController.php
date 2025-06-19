@@ -29,7 +29,7 @@ class FavoriteController extends Controller
                 return Response::success(null,204);
             }
 
-            return Response::success($favorites);
+            return Response::success(['favorites'=> $favorites]);
 
         } catch(\Exception $error) {
             return Response::error($error);
@@ -40,10 +40,13 @@ class FavoriteController extends Controller
     {
         try {
             $created = $this->favoriteService->addFavorite($requestData->getProductId());
+            $header = [
+                'Location'=> Route('client.favoriteList', ['clientId' =>$requestData->getClientId()])
+            ];
 
-            if ($created) return Response::success('Added to favorited', 201);
+            if ($created) return Response::success('Added to favorited', 201, $header);
 
-            return Response::success('Already favorited');
+            return Response::success('Already favorited',200, $header);
 
         } catch (\Exception $error) {
             return Response::error($error);
@@ -54,7 +57,10 @@ class FavoriteController extends Controller
     {
         try {
             $this->favoriteService->removeFavorite($requestData->getProductId());
-            return Response::success(null,204);
+            $header = [
+                'Location'=> Route('client.favoriteList', ['clientId' =>$requestData->getClientId()])
+            ];
+            return Response::success(null,204,$header);
         } catch(\Exception $error) {
             return Response::error($error);
         }

@@ -2,12 +2,14 @@
 
 namespace App\Http\Requests\Client;
 
+use App\Data\DTOs\ClientEditDto;
+use App\Data\Mappers\ClientEditMapper;
 use Illuminate\Contracts\Validation\Validator as ValidatorForm;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Support\Helpers\Response;
 use App\Support\Helpers\Validation;
 
-class AddClientFavoritesRequest extends FormRequest
+class EditClientRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -17,8 +19,12 @@ class AddClientFavoritesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'productId' => 'required|integer'
+            'name' => 'required|string'
         ];
+    }
+    public function getClientEditData(): ClientEditDto
+    {
+        return ClientEditMapper::fromArray($this->validated());
     }
 
     public function messages(): array
@@ -36,19 +42,6 @@ class AddClientFavoritesRequest extends FormRequest
         Response::validation($validator);
     }
 
-    public function validationData(): array
-    {
-       return array_merge($this->all(), [
-            'productId' => $this->route('productId'),
-        ]);
-    }
-    public function getProductId(): int
-    {
-        return (int) $this->validated()['productId'];
-    }
-    public function getClientId(): int
-    {
-        return (int) auth()->id();
-    }
+
 
 }

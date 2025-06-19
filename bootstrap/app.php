@@ -14,9 +14,6 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->name('client.')
                 ->group(base_path('routes/api/client.php'));
             Route::prefix('api')
-                ->name('products.')
-                ->group(base_path('routes/api/products.php'));
-            Route::prefix('api')
                 ->name('auth.')
                 ->group(base_path('routes/api/auth.php'));
         },

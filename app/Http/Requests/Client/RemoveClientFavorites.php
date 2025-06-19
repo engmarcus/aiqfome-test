@@ -46,5 +46,9 @@ class RemoveClientFavorites extends FormRequest
     {
         return (int) $this->validated()['productId'];
     }
+    public function getClientId(): int
+    {
+        return (int) auth()->id();
+    }
 
 }
