@@ -4,9 +4,9 @@ namespace App\Documentation;
 
 /**
  * @OA\Info(
- *     title="Aiqfome-Test",
+ *     title="Aiqfome Test API",
  *     version="1.0.0",
- *     description="Essas Apis são usadas por apps e interfaces web para armazenar e consultar produtos marcados como favoritos pelos clientes"
+ *     description="Esta API é utilizada por aplicações móveis e interfaces web do sistema Aiqfome para o gerenciamento de clientes e seus produtos favoritos."
  * )
  */
 class OpenApi

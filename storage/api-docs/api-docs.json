@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Aiqfome-Test",
-        "description": "Essas Apis são usadas por apps e interfaces web para armazenar e consultar produtos marcados como favoritos pelos clientes",
+        "title": "Aiqfome Test API",
+        "description": "Esta API é utilizada por aplicações móveis e interfaces web do sistema Aiqfome para o gerenciamento de clientes e seus produtos favoritos.",
         "version": "1.0.0"
     },
     "paths": {
@@ -11,7 +11,8 @@
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Login do cliente",
+                "summary": "Autenticar cliente",
+                "description": "Realiza a autenticação do cliente e retorna um token JWT válido.",
                 "operationId": "06bd589024dc3f55773c03342a905603",
                 "requestBody": {
                     "required": true,
@@ -25,7 +26,7 @@
                                 "properties": {
                                     "email": {
                                         "type": "string",
-                                        "example": "user@example.com"
+                                        "example": "user@aiqfome.com"
                                     },
                                     "password": {
                                         "type": "string",
@@ -39,7 +40,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Token gerado com sucesso",
+                        "description": "Autenticado com sucesso",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -56,7 +57,7 @@
                                             "properties": {
                                                 "token": {
                                                     "type": "string",
-                                                    "example": "OG123123E......."
+                                                    "example": "eyJ0eXAiOiJKV1QiLCJh..."
                                                 },
                                                 "tokenType": {
                                                     "type": "string",
@@ -74,31 +75,163 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "Falha na autenticação",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred during the process."
+                                        },
+                                        "error": {
+                                            "properties": {
+                                                "statusCode": {
+                                                    "type": "integer",
+                                                    "example": 401
+                                                },
+                                                "details": {
+                                                    "type": "string",
+                                                    "example": "Invalid email or password."
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
         },
-        "/api/v1/clients/{clientId}/favorites": {
-            "get": {
+        "/api/v1/auth/reset": {
+            "post": {
                 "tags": [
-                    "Favorites"
+                    "Auth"
                 ],
-                "summary": "Lista produtos favoritos do cliente autenticado",
-                "operationId": "listFavorites",
-                "parameters": [
-                    {
-                        "name": "clientId",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
+                "summary": "Resetar a senha de um cliente",
+                "description": "Permite que um cliente altere sua senha atual, informando a senha antiga.",
+                "operationId": "025f2c1aef1193a2014fb75dc023a946",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "newPassword",
+                                    "newPasswordConfirmed"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "user@aiqfome.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "senhaAtual123"
+                                    },
+                                    "newPassword": {
+                                        "type": "string",
+                                        "example": "novaSenha123"
+                                    },
+                                    "newPasswordConfirmed": {
+                                        "type": "string",
+                                        "example": "novaSenha123"
+                                    }
+                                },
+                                "type": "object"
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
-                        "description": "Lista de produtos favoritos",
+                        "description": "Senha atualizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Password updated successfully."
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "422": {
+                        "description": "Falha de validação dos campos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed. Please review the input data."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "newPasswordConfirmed": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The new password confirmed must match new password."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/me": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Retorna dados do usuário autenticado",
+                "description": "Obtém as informações do usuário logado e dados da autenticação atual.",
+                "operationId": "ac4c17c71c43c31e0f0250433b55122d",
+                "responses": {
+                    "200": {
+                        "description": "Dados do usuário autenticado retornados com sucesso",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -112,35 +245,556 @@
                                             "example": "ok"
                                         },
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer",
-                                                        "example": 1
+                                            "properties": {
+                                                "user": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 45
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Ai Q Fome"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "user@aiqfome.com"
+                                                        },
+                                                        "role": {
+                                                            "type": "string",
+                                                            "example": "user"
+                                                        }
                                                     },
-                                                    "title": {
-                                                        "type": "string",
-                                                        "example": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops"
-                                                    },
-                                                    "image": {
-                                                        "type": "string",
-                                                        "format": "url",
-                                                        "example": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"
-                                                    },
-                                                    "price": {
-                                                        "type": "number",
-                                                        "format": "float",
-                                                        "example": 109.95
-                                                    },
-                                                    "review": {
-                                                        "type": "number",
-                                                        "format": "float",
-                                                        "example": 3.9
-                                                    }
+                                                    "type": "object"
                                                 },
-                                                "type": "object"
-                                            }
+                                                "auth": {
+                                                    "properties": {
+                                                        "type": {
+                                                            "type": "string",
+                                                            "example": "Bearer"
+                                                        },
+                                                        "expiresIn": {
+                                                            "type": "integer",
+                                                            "example": 3600
+                                                        },
+                                                        "expiresAt": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "example": "2025-06-19T15:42:44-03:00"
+                                                        },
+                                                        "authenticatedAt": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "example": "2025-06-19T14:42:44-03:00"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/auth/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Faz logout do usuário autenticado",
+                "description": "Encerra a sessão do usuário e invalida o token de autenticação.",
+                "operationId": "06af01f6fa2ed0fe1a9bd81d4a6a33c3",
+                "responses": {
+                    "200": {
+                        "description": "Logout realizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logged out successfully"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/clients/{clientId}/profile": {
+            "get": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "(Privado)Obter perfil do cliente",
+                "description": "Retorna os dados do perfil do cliente autenticado pelo ID.",
+                "operationId": "85cd6b2b1142281067ba043688f4daba",
+                "parameters": [
+                    {
+                        "name": "clientId",
+                        "in": "path",
+                        "description": "ID do cliente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Perfil do cliente retornado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "user": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 0
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Ai que fome"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "user@aiqfome.com"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForbiddenError"
+                    },
+                    "422": {
+                        "description": "Falha de validação dos campos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/clients/register": {
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Cadastrar um novo cliente",
+                "description": "Cria um novo cliente no sistema. Em caso de sucesso, retorna o cliente criado e o header `Location` com URL para buscar os dados do cliente.",
+                "operationId": "5e2a3fd1cd9e11a4d4835cd06172e29b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Ai Q Fome"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@aiqfome.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "senha123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Cliente criado com sucesso",
+                        "headers": {
+                            "Location": {
+                                "description": "URL para buscar os dados do cliente criado",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "/api/v1/clients/0/profile"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 0
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "user"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "user@email"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-06-19T16:56:44.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-06-19T16:56:44.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Falha de validação dos campos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                }
+            }
+        },
+        "/api/v1/clients/{clientId}": {
+            "delete": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "(Privado) Deletar cliente",
+                "description": "Remove permanentemente o cliente identificado por clientId. A ação é irreversível. Rota protegida.",
+                "operationId": "a3800c9fe60e3e34cb89c5f2b6344135",
+                "parameters": [
+                    {
+                        "name": "clientId",
+                        "in": "path",
+                        "description": "ID do cliente a ser deletado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Cliente deletado com sucesso (sem conteúdo)"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForbiddenError"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "(Privado) Atualizar nome do cliente",
+                "description": "Atualiza os dados do cliente autenticado. Apenas o campo 'name' pode ser alterado. Retorna os dados atualizados e um header 'Location' com a URL do perfil.",
+                "operationId": "003804b5a5ec5e77e2bc7cf889545da4",
+                "parameters": [
+                    {
+                        "name": "clientId",
+                        "in": "path",
+                        "description": "ID do cliente a ser atualizado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 0
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Ai Q Fome marcus"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cliente atualizado com sucesso",
+                        "headers": {
+                            "Location": {
+                                "description": "URL para o perfil atualizado do cliente",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "/api/v1/clients/0/profile"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 0
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Ai Q Fome marcus"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "user@aiqfome.com"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-06-17T19:37:06.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-06-19T17:13:54.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForbiddenError"
+                    },
+                    "422": {
+                        "description": "Falha de validação dos campos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/clients/{clientId}/favorites": {
+            "get": {
+                "tags": [
+                    "Favorites"
+                ],
+                "summary": "(Privado) Listar produtos favoritos do cliente",
+                "description": "Retorna a lista de produtos favoritos do cliente autenticado. Se não houver favoritos, retorna 204.",
+                "operationId": "2c1c946a000f6aa5b78a169ae9190579",
+                "parameters": [
+                    {
+                        "name": "clientId",
+                        "in": "path",
+                        "description": "ID do cliente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de favoritos retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "favorites": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 3
+                                                            },
+                                                            "title": {
+                                                                "type": "string",
+                                                                "example": "Mens Cotton Jacket"
+                                                            },
+                                                            "image": {
+                                                                "type": "string",
+                                                                "format": "uri",
+                                                                "example": "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg"
+                                                            },
+                                                            "price": {
+                                                                "type": "number",
+                                                                "format": "float",
+                                                                "example": 55.99
+                                                            },
+                                                            "review": {
+                                                                "type": "number",
+                                                                "format": "float",
+                                                                "example": 4.7
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -149,7 +803,7 @@
                         }
                     },
                     "204": {
-                        "description": "Sem favoritos - Nenhum conteúdo para mostrar"
+                        "description": "Nenhum produto favorito encontrado (sem conteúdo)"
                     },
                     "401": {
                         "$ref": "#/components/responses/UnauthorizedError"
@@ -173,34 +827,68 @@
                 "tags": [
                     "Favorites"
                 ],
-                "summary": "Adiciona um produto aos favoritos de um cliente",
-                "operationId": "addFavorite",
+                "summary": "(Privado) Adicionar produto aos favoritos",
+                "description": "Adiciona um produto aos favoritos do cliente autenticado. Se já estiver adicionado, informa. Em caso de sucesso, retorna header Location para a listagem.",
+                "operationId": "9de73c518a38e5fbb6bc1b39cb7722af",
                 "parameters": [
                     {
                         "name": "clientId",
                         "in": "path",
+                        "description": "ID do cliente",
                         "required": true,
                         "schema": {
                             "type": "integer",
-                            "example": 1
+                            "example": 0
                         }
                     },
                     {
                         "name": "productId",
                         "in": "path",
+                        "description": "ID do produto a ser favoritado",
                         "required": true,
                         "schema": {
                             "type": "integer",
-                            "example": 10
+                            "example": 32
                         }
                     }
                 ],
                 "responses": {
-                    "204": {
-                        "description": "No Content — favorito salvo com sucesso"
+                    "200": {
+                        "description": "Produto favoritado ou já existente nos favoritos",
+                        "headers": {
+                            "Location": {
+                                "description": "URL para listar os produtos favoritos atualizados",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "/api/v1/clients/0/favorites"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Added to favorited"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Not Found — produto não localizado",
+                        "description": "Produto não encontrado",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -211,17 +899,100 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "An error occurred during the process."
+                                            "example": "Not found."
                                         },
-                                        "error": {
+                                        "errors": {
                                             "properties": {
-                                                "statusCode": {
-                                                    "type": "integer",
-                                                    "example": 404
-                                                },
                                                 "details": {
                                                     "type": "string",
-                                                    "example": "Product not found: ID 1"
+                                                    "example": "Product not found: ID 32"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForbiddenError"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Favorites"
+                ],
+                "summary": "(Privado) Remover produto dos favoritos",
+                "description": "Remove o produto dos favoritos do cliente autenticado. Se não existir nos favoritos, retorna erro 404. Em sucesso, retorna 204 e header 'Location' com a lista atualizada.",
+                "operationId": "7f6109b8eacfa04320978213e44d8776",
+                "parameters": [
+                    {
+                        "name": "clientId",
+                        "in": "path",
+                        "description": "ID do cliente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 0
+                        }
+                    },
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "description": "ID do produto a ser removido dos favoritos",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 32
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Produto removido dos favoritos (sem conteúdo)",
+                        "headers": {
+                            "Location": {
+                                "description": "URL para listar os produtos favoritos atualizados",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "/api/v1/clients/0/favorites"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Produto não encontrado nos favoritos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Not found."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "details": {
+                                                    "type": "string",
+                                                    "example": "Favorite not found: ID 32"
                                                 }
                                             },
                                             "type": "object"
@@ -251,6 +1022,38 @@
         }
     },
     "components": {
+        "schemas": {
+            "ValidationErrorResponse": {
+                "required": [
+                    "success",
+                    "message",
+                    "errors"
+                ],
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Validation failed. Please review the input data."
+                    },
+                    "errors": {
+                        "properties": {
+                            "email": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "example": "Unable to complete the request. Please verify your data."
+                                }
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            }
+        },
         "responses": {
             "InternalServerError": {
                 "description": "Internal Server Error — erro interno no servidor",
@@ -356,11 +1159,15 @@
     "tags": [
         {
             "name": "Auth",
-            "description": "Auth"
+            "description": "Endpoints para autenticação e gerenciamento de sessão dos clientes"
+        },
+        {
+            "name": "Clients",
+            "description": "Endpoints relacionados a clientes e seu gerenciamento"
         },
         {
             "name": "Favorites",
-            "description": "Favorites"
+            "description": "Endpoints relacionados aos produtos favoritos do cliente e seu gerenciamento"
         }
     ]
 }

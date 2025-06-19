@@ -44,5 +44,22 @@ use OpenApi\Annotations as OA;
  *         )
  *     )
  * )
+ *
+ *@OA\Schema(
+ *     schema="ValidationErrorResponse",
+ *     type="object",
+ *     required={"success","message","errors"},
+ *     @OA\Property(property="success", type="boolean", example=false),
+ *     @OA\Property(property="message", type="string", example="Validation failed. Please review the input data."),
+ *     @OA\Property(
+ *         property="errors",
+ *         type="object",
+ *         @OA\Property(
+ *             property="email",
+ *             type="array",
+ *             @OA\Items(type="string", example="Unable to complete the request. Please verify your data.")
+ *         )
+ *     )
+ * )
  */
 class SharedResponses {}

@@ -20,11 +20,7 @@ class ClientResetPassword extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => [
-                'required',
-                'email',
-                Rule::exists('pgsql.client.clients', 'email'),
-            ],
+            'email' => 'required|email',
             'password' => 'required|string',
             'newPassword' => 'required|string|min:6',
             'newPasswordConfirmed' => 'required|string|min:6|same:newPassword',

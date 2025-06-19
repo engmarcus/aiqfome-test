@@ -18,10 +18,7 @@ class ClientLoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => [
-                'required',
-                Rule::exists('pgsql.client.clients', 'email'),
-            ],
+            'email' => 'required|email',
             'password' => 'required|string|min:6',
         ];
     }
