@@ -18,7 +18,6 @@ class AuthController extends Controller
     public function login(ClientLoginRequest $requestData)
     {
         $loginData = $requestData->only('email', 'password');
-
         try{
             $response = $this->authService->signIn($loginData);
             return Response::success( $response ,200);
