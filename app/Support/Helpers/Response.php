@@ -42,6 +42,11 @@ class Response
         $statusCode = self::isStandardHttpStatusCode($error->getCode())
             ? $error->getCode()
             : ResponseHttp::HTTP_INTERNAL_SERVER_ERROR;
+
+        if($statusCode == 404) {
+            return self::notFound($error->getMessage());
+        }
+
         $response = [
             'success'    => false,
             'message'    => $statusCode === 500
@@ -80,6 +85,21 @@ class Response
         ];
 
         return response()->json($response, $statusCode);
+    }
+
+    /**
+     * Return a standard 404 response.
+     * @param \Throwable $error
+     *
+     * @return JsonResponse
+     */
+    private static function notFound(string $message = 'Resource not found.'): JsonResponse
+    {
+        return response()->json([
+            'success' => false,
+            'message' => 'Not found.',
+            'errors'  => ['details' => $message],
+        ], ResponseHttp::HTTP_NOT_FOUND);
     }
 
     /**
