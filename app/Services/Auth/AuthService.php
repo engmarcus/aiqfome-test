@@ -2,14 +2,19 @@
 
 namespace App\Services\Auth;
 
+use App\Data\DTOs\ClientPasswordResetDto;
+use Illuminate\Support\Str;
 use App\Repositories\Auth\AuthRepository;
+use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthService
 {
     private $authRepository;
 
-    public function __construct(AuthRepository $authRepository) {}
+    public function __construct(AuthRepository $authRepository) {
+        $this->authRepository = $authRepository;
+    }
 
     public function signIn(array $credentials): array
     {
@@ -23,8 +28,28 @@ class AuthService
             'tokenType' => 'Bearer',
             'expiresIn' => auth('api')->factory()->getTTL() * 60,
         ];
-
     }
+
+    public function resetPassword(ClientPasswordResetDto $data): string
+    {
+        $credentials = [
+            'email' => $data->email,
+            'password' => $data->password,
+        ];
+
+        $client = $this->authRepository->getClientByEmail($data->email);
+
+        if (!$client || !$this->checkCredentials($credentials, $client)) {
+            throw new \RuntimeException('Invalid credentials', 401);
+        }
+
+        $client->password = Hash::make($data->newPassword);
+        $client->remember_token = Str::random(60);
+
+        $client->save();
+        return 'Password updated successfully.';
+    }
+
     public function getAuthenticatedUser(): array
     {
         $user = auth()->user();
@@ -53,6 +78,11 @@ class AuthService
     public function logout()
     {
         auth()->logout();
+    }
+
+    private function checkCredentials(array $credentials, $client): bool
+    {
+        return Hash::check($credentials['password'], $client->password);
     }
 
 }

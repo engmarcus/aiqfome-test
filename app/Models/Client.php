@@ -46,6 +46,7 @@ class Client extends Authenticatable implements JWTSubject
             'client_id' => $this->id,
             'email'     => $this->email,
             'role'      => 'client',
+            'remember_token' => $this->remember_token
         ];
     }
 }

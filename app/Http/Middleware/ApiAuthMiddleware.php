@@ -20,11 +20,20 @@ class ApiAuthMiddleware
     {
         try {
             JWTAuth::parseToken()->authenticate();
+            $this->isValidToken();
         } catch (Exception $e) {
 
             return HelpersResponse::unauthenticated();
         }
 
         return $next($request);
+    }
+
+    private function isValidToken()
+    {
+        $user = auth()->user();
+        $payload = JWTAuth::getPayload();
+        $isValid = $user->remember_token == $payload->get('remember_token');
+        if(!$isValid) throw new Exception('Invalid Token');
     }
 }

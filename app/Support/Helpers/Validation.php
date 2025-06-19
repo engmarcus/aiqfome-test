@@ -41,11 +41,13 @@ class Validation
             'array' => 'The :attribute field must be an array.',
             'boolean' => 'The :attribute field must be true or false.',
             'json' => 'The :attribute field must contain a valid JSON string.',
+            'exists' => 'Check :attribute and try again.',
 
             'email' => 'The :attribute must be a valid email address.',
             'confirmed' => 'The :attribute confirmation does not match.',
             'password' => 'The password must meet the required criteria.',
-            'unique' => 'Unable to complete the request. Please verify your data.'
+            'unique' => 'Unable to complete the request. Please verify your data.',
+            'same' => 'The :attribute must match :other.',
 
         ];
 

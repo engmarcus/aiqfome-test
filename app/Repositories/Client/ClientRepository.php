@@ -2,10 +2,10 @@
 
 namespace App\Repositories\Client;
 
-use App\Data\DTOs\ClientEditDto;
 use App\Http\Requests\Auth\ClientRegisterRequest;
 use App\Models\Client;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class ClientRepository
 {
@@ -15,6 +15,7 @@ class ClientRepository
                     'name'     => $userData->name,
                     'email'    => $userData->email,
                     'password' => Hash::make($userData->password),
+                    'remember_token' => Str::random(60),
                 ]);
     }
 
@@ -32,10 +33,6 @@ class ClientRepository
         return Client::where('id',$clientId)
             ->delete() > 0;
     }
-
-
-
-
 }
 
 
