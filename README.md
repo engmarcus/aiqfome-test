@@ -144,6 +144,9 @@ Disponível em:
 ```
 http://localhost:8000/api/documentation
 ```
+#### Tela de Documentação
+
+![Tela de Documentação](docs/assets/doc.png)
 
 ---
 
