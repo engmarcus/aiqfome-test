@@ -59,7 +59,7 @@ Authorization: Bearer {seu_token_aqui}
 
 
 
-## 🛠️ Instalação Local
+## Instalação Local
 
 ### 1. Clonar e preparar
 
