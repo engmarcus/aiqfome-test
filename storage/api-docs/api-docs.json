@@ -30,7 +30,7 @@
                                     },
                                     "password": {
                                         "type": "string",
-                                        "example": "123456"
+                                        "example": "senha123"
                                     }
                                 },
                                 "type": "object"
@@ -483,6 +483,11 @@
                                         "type": "string",
                                         "format": "password",
                                         "example": "senha123"
+                                    },
+                                    "passwordConfirmation": {
+                                        "type": "string",
+                                        "format": "passwordConfirmation",
+                                        "example": "senha123"
                                     }
                                 },
                                 "type": "object"
@@ -608,7 +613,7 @@
                     "Clients"
                 ],
                 "summary": "(Privado) Atualizar nome do cliente",
-                "description": "Atualiza os dados do cliente autenticado. Apenas o campo 'name' pode ser alterado. Retorna os dados atualizados e um header 'Location' com a URL do perfil.",
+                "description": "Atualiza os dados do cliente autenticado. Apenas o campo 'name' pode ser alterado. Retorna os dados atualizados e um header `Location` com a URL do perfil.",
                 "operationId": "003804b5a5ec5e77e2bc7cf889545da4",
                 "parameters": [
                     {

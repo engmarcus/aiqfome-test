@@ -21,10 +21,7 @@ class ClientController extends Controller
     {
         try{
             $client = $this->clientService->createClient($requestData);
-            $header = [
-                'Location'=> Route('client.profile', ['clientId' => $client->id])
-            ];
-            return Response::success($client,201, $header);
+            return Response::success($client,201);
         }catch(\Exception $error){
              return Response::error($error);
         }
@@ -44,10 +41,8 @@ class ClientController extends Controller
         try{
             $clientEdit = $editClientRequest->getClientEditData();
             $clientData = $this->clientService->updatePartial($clientEdit);
-            $header = [
-                'Location'=> Route('client.profile', ['clientId' => $clientData->id])
-            ];
-            return Response::success($clientData,200, $header);
+
+            return Response::success($clientData,200);
         }catch(\Exception $error){
              return Response::error($error);
         }

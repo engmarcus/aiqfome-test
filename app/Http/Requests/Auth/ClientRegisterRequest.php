@@ -23,7 +23,8 @@ class ClientRegisterRequest extends FormRequest
                 'required',
                 Rule::unique('pgsql.client.clients', 'email'),
             ],
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:6',
+            'passwordConfirmation' => 'required|string|min:6|same:password',
         ];
     }
 

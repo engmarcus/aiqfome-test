@@ -75,7 +75,8 @@ class ClientAnnotation
      *             required={"name", "email", "password"},
      *             @OA\Property(property="name", type="string", example="Ai Q Fome"),
      *             @OA\Property(property="email", type="string", format="email", example="user@aiqfome.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="senha123")
+     *             @OA\Property(property="password", type="string", format="password", example="senha123"),
+     *             @OA\Property(property="passwordConfirmation", type="string", format="passwordConfirmation", example="senha123")
      *         )
      *     ),
      *     @OA\Response(
@@ -117,7 +118,7 @@ class ClientAnnotation
      *     path="/api/v1/clients/{clientId}",
      *     tags={"Clients"},
      *     summary="(Privado) Atualizar nome do cliente",
-     *     description="Atualiza os dados do cliente autenticado. Apenas o campo 'name' pode ser alterado. Retorna os dados atualizados e um header 'Location' com a URL do perfil.",
+     *     description="Atualiza os dados do cliente autenticado. Apenas o campo 'name' pode ser alterado. Retorna os dados atualizados e um header `Location` com a URL do perfil.",
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="clientId",

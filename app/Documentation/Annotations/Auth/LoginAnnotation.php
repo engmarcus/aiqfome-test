@@ -21,7 +21,7 @@ class LoginAnnotation
     *         @OA\JsonContent(
     *             required={"email","password"},
     *             @OA\Property(property="email", type="string", example="user@aiqfome.com"),
-    *             @OA\Property(property="password", type="string", example="123456")
+    *             @OA\Property(property="password", type="string", example="senha123")
     *         )
     *     ),
     *     @OA\Response(
