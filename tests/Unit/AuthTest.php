@@ -25,7 +25,6 @@ class AuthTest extends TestCase
             'email' => 'user@example.com',
             'password' => 'secret123',
         ]);
-
         // Valida status HTTP 200
         $response->assertStatus(200);
 
