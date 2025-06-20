@@ -1,19 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Inicializando...</title>
+  <title>Carregando aplicação...</title>
   <style>
     body {
       font-family: sans-serif;
       text-align: center;
-      padding-top: 20vh;
-      color: #333;
+      margin-top: 80px;
+    }
+
+    .progress-container {
+      width: 300px;
+      margin: 0 auto;
+      background: #eee;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 24px;
+      background: #3498db;
+      width: 0%;
+      color: white;
+      line-height: 24px;
+      transition: width 0.4s ease;
+    }
+
+    .label {
+      margin-top: 10px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h1>🚀 A aplicação está inicializando...</h1>
-  <p>Isso pode levar alguns segundos.</p>
+
+  <h1>Inicializando a aplicação...</h1>
+
+  <div class="progress-container">
+    <div class="progress-bar" id="bar">0%</div>
+  </div>
+
+  <div class="label" id="label">Aguarde, estamos preparando tudo...</div>
+
+  <script>
+    async function updateProgress() {
+      try {
+        const response = await fetch('/progress.txt', { cache: "no-store" });
+        const text = await response.text();
+        const percent = parseInt(text.trim()) || 0;
+
+        const bar = document.getElementById('bar');
+        const label = document.getElementById('label');
+
+        bar.style.width = percent + '%';
+        bar.textContent = percent + '%';
+
+        if (percent < 100) {
+          setTimeout(updateProgress, 1000);
+        } else {
+          label.textContent = 'Aplicação pronta! Redirecionando...';
+          setTimeout(() => {
+            window.location.href = '/api/documentation';
+          }, 2000);
+        }
+      } catch (e) {
+        console.error('Erro ao buscar progresso:', e);
+        setTimeout(updateProgress, 2000);
+      }
+    }
+
+    updateProgress();
+  </script>
+
 </body>
 </html>
