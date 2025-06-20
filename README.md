@@ -36,6 +36,35 @@ O Aiqfome está expandindo seus canais de integração e precisa de uma API robu
 
 ---
 
+---
+## Próximos Passos e Melhorias Sugeridas
+
+A aplicação foi pensada com escalabilidade e boas práticas em mente. A seguir estão algumas sugestões para evolução da arquitetura:
+
+-  **Orquestração com Kubernetes**
+  Containerizar a aplicação com suporte ao Kubernetes e práticas de CI/CD, permitirá escalar horizontalmente conforme a demanda.
+-  **Vault para gerenciamento de segredos**
+  A utilização do [HashiCorp Vault](https://www.vaultproject.io/) permitirá injetar credenciais, secrets e tokens sensíveis de forma segura e auditável.
+- **Redis como sistema de cache distribuído**
+  A troca do cache local por uma instância do Redis permitirá maior eficiência e compatibilidade em ambientes com múltiplas réplicas, além de habilitar features como TTL por item, filas assíncronas e pub/sub para eventos.
+- **Autoescalabilidade**
+  A configuração de métricas de uso (CPU/RAM) via Horizontal Pod Autoscaler (HPA) no Kubernetes permitirá escalar os pods da API automaticamente de acordo com a carga de trabalho.
+
+- **Monitoramento e observabilidade**
+  Ferramentas como Prometheus + Grafana ou Elastic Stack (ELK) podem ser utilizadas para monitorar desempenho, rastrear erros e analisar métricas em tempo real.
+
+- **Mais testes e CI/CD completo**
+  Expandir a cobertura de testes (unitários e integração) e configurar pipelines CI/CD com validação automatizada antes do deploy.
+
+- **Rate limiting e proteção contra abuso**
+  Implementar controle de requisições por IP ou token com Laravel RateLimiter + Redis, para proteger a API de uso indevido.
+
+```
+Essas melhorias visam preparar a aplicação para ambientes de produção de alta escala e uso intensivo.
+
+```
+---
+
 ## Tecnologias Utilizadas
 
 - Laravel 12
@@ -59,7 +88,7 @@ Authorization: Bearer {seu_token_aqui}
 
 
 
-## Instalação Local
+## 🛠️ Instalação Local
 
 ### 1. Clonar e preparar
 
