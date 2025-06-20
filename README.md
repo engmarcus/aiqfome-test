@@ -98,12 +98,18 @@ cd aiqfome-test
 cp .env.example .env
 ```
 
-### 2. Gerar chave e segredo JWT
+### 2. Instalar dependências, gerar chave e segredo JWT
 
 ```bash
+composer install
+```
+```bash
 php artisan key:generate
+```
+```bash
 php artisan jwt:secret
 ```
+
 
 ### 3. Ajustar o `.env`
 Conforme seu ambiente
@@ -117,13 +123,11 @@ DB_USERNAME=seu_usuario
 DB_PASSWORD=sua_senha
 ```
 
-### 4. Instalar dependências e preparar o banco de dados
+### 4. Preparar o banco de dados
 
 Foi criado um comando personalizado que automatiza a criação do banco, execução das migrações e demais preparações iniciais.
 
 ```bash
-composer install
-
 php artisan app:setup
 ```
 
