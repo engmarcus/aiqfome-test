@@ -198,6 +198,66 @@ php artisan test
 
 ---
 
+##   API - Instruções de Uso
+
+##  Autenticação via Swagger
+
+Para utilizar os endpoints protegidos da API, siga os passos abaixo:
+
+### 1. Cadastrar um novo cliente
+Acesse o Swagger e vá até a seção **Clients**.
+
+- Use a rota: `POST /api/v1/clients/register`
+- Preencha os dados obrigatórios como `name`, `email` e `password`
+- Exemplo de payload:
+```json
+{
+  "name": "Ai Q Fome",
+  "email": "user@aiqfome.com",
+  "password": "senha123",
+  "passwordConfirmation": "senha123"
+}
+```
+
+### 2. Realizar login
+Ainda no Swagger, acesse a rota: `POST /api/v1/auth/login`.
+
+- Informe o `email` e `password` cadastrados.
+- Você receberá uma resposta como esta:
+```json
+{
+  "success": true,
+  "message": "ok",
+  "data": {
+    "token": "eyJ0eXAiOiJK....",
+    "tokenType": "Bearer",
+    "expiresIn": 3600
+  }
+}
+```
+
+### 3. Autorizar no Swagger
+
+Para que os endpoints autenticados funcionem:
+
+- Clique no botão **Authorize** no canto superior direito da interface Swagger.
+- No campo de autorização, cole o token no seguinte formato:
+
+```
+Bearer eyJ0eXAiOiJK...
+```
+
+- Clique em **Authorize** e depois em **Close**.
+
+Pronto! Agora você pode testar as rotas autenticadas diretamente pela interface do Swagger.
+
+---
+
+## Notas
+- O token de acesso expira em 1 hora.
+- Sempre utilize o prefixo `Bearer ` antes do token ao autorizar.
+- Caso o token expire, repita o processo de login para obter um novo.
+
 ---
 
 ## Possíveis Problemas
