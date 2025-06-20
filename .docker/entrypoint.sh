@@ -12,6 +12,8 @@ php artisan key:generate
 echo "75" > /var/www/public/progress.txt
 php artisan jwt:secret --force
 echo "80" > /var/www/public/progress.txt
+php artisan config:cache
+echo "85" > /var/www/public/progress.txt
 php artisan app:Setup || true
 echo "95" > /var/www/public/progress.txt
 echo "100" > /var/www/public/progress.txt
