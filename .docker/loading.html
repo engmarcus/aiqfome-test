@@ -1,47 +1,100 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Carregando aplicação...</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carregando... | aiqfome</title>
   <style>
+    :root {
+      --primary-color: #861481;
+      --text-color: #ffffff;
+      --bg-color: #fce4ec;
+      --font-family: 'Poppins', sans-serif;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: sans-serif;
+      background-color: var(--primary-color);
+      font-family: var(--font-family);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
       text-align: center;
-      margin-top: 80px;
+    }
+
+    .logo {
+      width: 150px;
+      margin-bottom: 20px;
+    }
+
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 6px solid rgba(255, 255, 255, 0.3);
+      border-top: 6px solid #fff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     .progress-container {
-      width: 300px;
-      margin: 0 auto;
-      background: #eee;
-      border-radius: 8px;
+      width: 80%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
       overflow: hidden;
+      margin: 20px 0;
     }
 
     .progress-bar {
-      height: 24px;
-      background: #3498db;
-      width: 0%;
-      color: white;
-      line-height: 24px;
-      transition: width 0.4s ease;
+      height: 25px;
+      background: #ffffff;
+      color: #861481;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: width 0.3s ease;
     }
 
-    .label {
-      margin-top: 10px;
-      font-weight: bold;
+    .message {
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+    .logo {
+        width: 250px;
+        margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
 
-  <h1>Inicializando a aplicação...</h1>
+  <img src="/logo.png" alt="Logo AiqFome" class="logo" />
+
+
+  <div class="loader"></div>
 
   <div class="progress-container">
-    <div class="progress-bar" id="bar">0%</div>
+    <div id="bar" class="progress-bar" style="width: 0%;">0%</div>
   </div>
 
-  <div class="label" id="label">Aguarde, estamos preparando tudo...</div>
+  <div id="label" class="message">Aguenta aí! Estamos preparando sua fome 🍔</div>
 
   <script>
     async function updateProgress() {

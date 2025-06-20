@@ -20,7 +20,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www
 
 COPY . /var/www
+
 COPY .docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY .docker/php.ini /usr/local/etc/php/conf.d/custom.ini
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+RUN chown -R www-data:www-data /var/www
+
