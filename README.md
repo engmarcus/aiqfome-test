@@ -205,6 +205,105 @@ php artisan test
 - Banco não sobe? Verifique `.env` e se o serviço `db` do Docker está ativo.
 - Erro 500? Revise permissões, APP_KEY, JWT_SECRET ou variáveis ausentes.
 - Problemas com seed/migration? Confirme permissões de volume ou banco.
+- Pós Build com docker-compose error:
+```bash
+Building app
+[+] Building 90.8s (16/16) FINISHED                                                                                                                                                               docker:default
+ => [internal] load build definition from Dockerfile                                                                                                                                                        0.1s
+ => => transferring dockerfile: 609B                                                                                                                                                                        0.1s
+ => [internal] load metadata for docker.io/library/php:8.2-fpm                                                                                                                                              0.0s
+ => [internal] load metadata for docker.io/library/composer:latest                                                                                                                                          0.0s
+ => [internal] load .dockerignore                                                                                                                                                                           0.1s
+ => => transferring context: 2B                                                                                                                                                                             0.0s
+ => [stage-0 1/9] FROM docker.io/library/php:8.2-fpm                                                                                                                                                        0.0s
+ => [internal] load build context                                                                                                                                                                          75.2s
+ => => transferring context: 940.98kB                                                                                                                                                                      75.2s
+ => FROM docker.io/library/composer:latest                                                                                                                                                                  0.0s
+ => CACHED [stage-0 2/9] RUN apt-get update && apt-get install -y     git     curl     zip     unzip     libpq-dev     libonig-dev     libxml2-dev     libzip-dev     && docker-php-ext-install         pd  0.0s
+ => CACHED [stage-0 3/9] COPY --from=composer:latest /usr/bin/composer /usr/bin/composer                                                                                                                    0.0s
+ => CACHED [stage-0 4/9] WORKDIR /var/www                                                                                                                                                                   0.0s
+ => [stage-0 5/9] COPY . /var/www                                                                                                                                                                           2.4s
+ => [stage-0 6/9] COPY .docker/entrypoint.sh /usr/local/bin/entrypoint.sh                                                                                                                                   0.0s
+ => [stage-0 7/9] COPY .docker/php.ini /usr/local/etc/php/conf.d/custom.ini                                                                                                                                 0.0s
+ => [stage-0 8/9] RUN chmod +x /usr/local/bin/entrypoint.sh                                                                                                                                                 0.3s
+ => [stage-0 9/9] RUN chown -R www-data:www-data /var/www                                                                                                                                                  12.0s
+ => exporting to image                                                                                                                                                                                      0.6s
+ => => exporting layers                                                                                                                                                                                     0.6s
+ => => writing image sha256:d81e9f1f5d3e2354b573d8a8870ff9613089e0d2c8b056e81636daaa48f0333a                                                                                                                0.0s
+ => => naming to docker.io/library/aiqfome-test_app                                                                                                                                                         0.0s
+Starting laravel-db ... done
+Recreating laravel-app ...
+
+ERROR: for laravel-app  'ContainerConfig'
+
+ERROR: for app  'ContainerConfig'
+Traceback (most recent call last):
+  File "/usr/bin/docker-compose", line 33, in <module>
+    sys.exit(load_entry_point('docker-compose==1.29.2', 'console_scripts', 'docker-compose')())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/compose/cli/main.py", line 81, in main
+    command_func()
+  File "/usr/lib/python3/dist-packages/compose/cli/main.py", line 203, in perform_command
+    handler(command, command_options)
+  File "/usr/lib/python3/dist-packages/compose/metrics/decorator.py", line 18, in wrapper
+    result = fn(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/compose/cli/main.py", line 1186, in up
+    to_attach = up(False)
+                ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/compose/cli/main.py", line 1166, in up
+    return self.project.up(
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/compose/project.py", line 697, in up
+    results, errors = parallel.parallel_execute(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/compose/parallel.py", line 108, in parallel_execute
+    raise error_to_reraise
+  File "/usr/lib/python3/dist-packages/compose/parallel.py", line 206, in producer
+    result = func(obj)
+             ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/compose/project.py", line 679, in do
+    return service.execute_convergence_plan(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 579, in execute_convergence_plan
+    return self._execute_convergence_recreate(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 499, in _execute_convergence_recreate
+    containers, errors = parallel_execute(
+                         ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/compose/parallel.py", line 108, in parallel_execute
+    raise error_to_reraise
+  File "/usr/lib/python3/dist-packages/compose/parallel.py", line 206, in producer
+    result = func(obj)
+             ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 494, in recreate
+    return self.recreate_container(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 612, in recreate_container
+    new_container = self.create_container(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 330, in create_container
+    container_options = self._get_container_create_options(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 921, in _get_container_create_options
+    container_options, override_options = self._build_container_volume_options(
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 960, in _build_container_volume_options
+    binds, affinity = merge_volume_bindings(
+                      ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 1548, in merge_volume_bindings
+    old_volumes, old_mounts = get_container_data_volumes(
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/compose/service.py", line 1579, in get_container_data_volumes
+    container.image_config['ContainerConfig'].get('Volumes') or {}
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+KeyError: 'ContainerConfig'
+```
+Rode o comando pra limpar configurações e imagens antigas:
+
+```bash
+docker-compose down --volumes --remove-orphans && docker-compose build --no-cache && docker-compose up -d
+```
 
 ---
 
